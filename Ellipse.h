@@ -24,7 +24,7 @@ private:
 	Vector2f position;
 	Vector2f size;
 	float angle;
-	
+	float a;
 
 	Vector2f shift;
 	Vector2f focus1;

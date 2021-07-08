@@ -2,7 +2,7 @@
 
 float Distance(Vector2f const& u, Vector2f const& v)
 {
-	return sqrt(((u.x - v.x) * (u.x - v.x)) + ((u.y - v.y) * (u.y - v.y)));
+	return sqrt(pow(u.x - v.x, 2) + pow(u.y - v.y, 2));
 }
 
 Vector2f randPosition(Vector2f size)
@@ -28,4 +28,9 @@ Vector2f randVector2f(float const& min, float const& max)
 float randFloat(float const& min, float const& max)
 {
 	return (float)rand() / RAND_MAX * (max - min) + min;
+}
+
+Color randColor()
+{
+	return Color::Color((float)rand() / RAND_MAX * 255, (float)rand() / RAND_MAX * 255, (float)rand() / RAND_MAX * 255, (float)rand() / RAND_MAX * 255);
 }

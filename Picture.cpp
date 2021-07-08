@@ -1,35 +1,32 @@
 #include "Picture.h"
 #include "iostream"
 
-Picture::Picture(string _path, int _ellipse_nb, RenderWindow *_window)
+Picture::Picture(string _path, int _ellipse_num, RenderWindow *_window)
 {
+	path = _path;
+	ellipse_num = _ellipse_num;
+	window = _window;
+
 	srand(time(NULL));
+
+	model.loadFromFile(path);
+
+	size = Vector2f(model.getSize().x, model.getSize().y);
+
+	originalTexture.loadFromImage(model);
+	originalSprite.setTexture(originalTexture);
+
+	originalSprite.setPosition((800 - size.x) / 2, 800 - size.y);
+
+	current.create(size.x, size.y, Color::White);
+	currentEvolved.create(size.x, size.y, Color::White);
+
+	ellipse_array.push_back(Ellipse(randPosition(size), randSize(size / 2.f), randAngle(0, 360), randColor()));
 
 	evolution_number = 0;
 
 	similarity1 = 255;
 	similarity2 = 255;
-
-	path = _path;
-	ellipse_nb = _ellipse_nb;
-	window = _window;
-
-	model.loadFromFile(path);
-
-	texture.loadFromImage(model);
-	size = Vector2f(texture.getSize().x, texture.getSize().y);
-
-	current.create(size.x, size.y, Color::Red);
-	currentEvolved.create(size.x, size.y, Color::Blue);
-
-	sprite.setTexture(texture);
-	original.setTexture(texture);
-	original.setPosition(500, 300);
-	//sprite.setPosition((800 - size.x) / 2, 800 - size.y);
-
-	//ellipse_array.push_back(Ellipse(randPosition(size), randSize(size / 2.f), randAngle(0, 360), Color::Yellow));
-	ellipse_array.push_back(Ellipse(Vector2f(50, 50), Vector2f(12, 30), 66, Color::Yellow));
-
 }
 
 void Picture::getSimilarity()
@@ -37,13 +34,13 @@ void Picture::getSimilarity()
 	similarity1 = similarity2;
 	similarity2 = 0;
 
-	for (int i = 0; i < model.getSize().x; i++)
+	for (int i = 0; i < model.getSize().y; i++)
 	{
-		for (int j = 0; j < model.getSize().y; j++)
+		for (int j = 0; j < model.getSize().x; j++)
 		{
-			similarity2 = similarity2 + abs((float)model.getPixel(i, j).r - (float)currentEvolved.getPixel(i, j).r);
-			similarity2 = similarity2 + abs((float)model.getPixel(i, j).g - (float)currentEvolved.getPixel(i, j).g);
-			similarity2 = similarity2 + abs((float)model.getPixel(i, j).b - (float)currentEvolved.getPixel(i, j).b);
+			similarity2 = similarity2 + abs((float)model.getPixel(j, i).r - (float)currentEvolved.getPixel(j, i).r);
+			similarity2 = similarity2 + abs((float)model.getPixel(j, i).g - (float)currentEvolved.getPixel(j, i).g);
+			similarity2 = similarity2 + abs((float)model.getPixel(j, i).b - (float)currentEvolved.getPixel(j, i).b);
 		}
 	}
 	similarity2 = similarity2 / (3 * float(model.getSize().x) * float(model.getSize().y) * 2.55);
@@ -73,6 +70,8 @@ void Picture::mutate()
 	getSimilarity();
 
 	cout << similarity1 << endl;
+	cout << evolution_number << " EVO NUMBER " << endl;
+	cout << ellipse_num << "ELLIPSE NUM" << endl;
 
 	if (similarity2 >= similarity1) //got less similar
 	{
@@ -80,9 +79,8 @@ void Picture::mutate()
 		evolution_number++;
 		if (!used)
 		{
-			ellipse_array.push_back(Ellipse(randPosition(size), randSize(size / 2.f), randAngle(0, 360), Color::Yellow));
+			ellipse_array[i] = Ellipse(randPosition(size), randSize(size / 2.f), randAngle(0, 360), randColor());
 			evolution_number = 0;
-			cout << "D" << endl;
 		}
 		else
 		{
@@ -97,7 +95,7 @@ void Picture::mutate()
 		draw();
 	}
 
-	if (evolution_number > 500)
+	if (evolution_number > 200)
 	{
 		if (!used)
 		{
@@ -110,10 +108,12 @@ void Picture::mutate()
 			ellipse_current.putEllipse(currentEvolved);
 			current = currentEvolved;
 		}
-		ellipse_array.push_back(Ellipse(randPosition(size), randSize(size / 2.f), randAngle(0, 360), Color::Green));
+		ellipse_array.push_back(Ellipse(randPosition(size), randSize(size / 2.f), randAngle(0, 360), randColor()));
 		evolution_number = 0;
 		used = false;
+		ellipse_num += 1;
 	}
+
 	
 }
 
@@ -122,11 +122,21 @@ void Picture::draw()
 	texture.loadFromImage(currentEvolved);
 	sprite.setTexture(texture);
 
-	window->clear(Color::White);
+	window->clear(Color::Blue);
 
 	window->draw(sprite);
-	window->draw(original);
+	window->draw(originalSprite);
 
 	window->display();
+}
+
+int Picture::ellipse_number()
+{
+	return ellipse_num;
+}
+
+void Picture::save_picture(string filename)
+{
+	sprite.getTexture()->copyToImage().saveToFile(filename);
 }
 

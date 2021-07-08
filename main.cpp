@@ -8,28 +8,30 @@ using namespace std;
 using namespace sf;
 
 int main() {
-	string path = "5head.png";
+	string path = "aruler.jpeg";
+
+	string filename;
+	string jpg = ".jpg";
+	string jpeg = ".jpeg";
+	string png = ".png";
+
+	int increment = 50;
 
 	const int height = 800;
 	const int width = 800;
 
 	RenderWindow window(VideoMode(width, height), "Title");
 
-	Event event;
-
 	Picture picture(path, 1, &window);
 
 	while (window.isOpen()) 
 	{
-		while (window.pollEvent(event)) 
+		picture.mutate();
+		int num = picture.ellipse_number();
+		if (num % increment == 0)
 		{
-			if (event.type == sf::Event::Closed) 
-			{
-				window.close();
-			}
-
-			picture.mutate();
-
+			filename = "Incremental Pictures/aruler" + std::to_string(num / increment) + jpeg;
+			picture.save_picture(filename);
 		}
 	}
 	return 0;

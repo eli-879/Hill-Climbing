@@ -13,25 +13,28 @@ using namespace sf;
 class Picture
 {
 public:
-	Picture(string _path, int _ellipse_nb, RenderWindow *_window);
+	Picture(string _path, int _ellipse_num, RenderWindow *_window);
 
 	void getSimilarity();
 	void mutate();
 	void draw();
+	int ellipse_number();
+	void save_picture(string filename);
 
 	Image model;
 	Image current;
 	Image currentEvolved;
 
 	Texture texture;
+	Texture originalTexture;
 
 	Sprite sprite;
-	Sprite original;
+	Sprite originalSprite;
 
 private:
 	RenderWindow* window;
 	string path;
-	int ellipse_nb;
+	int ellipse_num;
 	Vector2f size;
 
 	Ellipse ellipse_current;

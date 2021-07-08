@@ -16,6 +16,8 @@ Vector2f randVector2f(float const& min, float const& max);
 
 float randFloat(float const& min, float const& max);
 
+Color randColor();
+
 
 
 
