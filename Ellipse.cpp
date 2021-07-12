@@ -23,7 +23,6 @@ Ellipse::Ellipse(Vector2f const& _position, Vector2f const& _size, float const& 
 
 void Ellipse::createFocus()
 {
-	
 	float hypotenuse = max(size.x, size.y);
 	float smaller = min(size.x, size.y);
 
@@ -37,9 +36,6 @@ void Ellipse::createFocus()
 
 	shift = Vector2f((centerToFocus * cos(radians)), (centerToFocus * sin(radians)));
 	
-	//float c = sqrt(size.x * size.x - size.y * size.y);
-	
-	//shift = Vector2f(c * cos(radians), c * sin(radians));
 	focus1 = position + shift;
 	focus2 = position - shift;
 }
@@ -61,9 +57,9 @@ void Ellipse::scale(Vector2f _scale)
 
 void Ellipse::putEllipse(Image &image)
 {
-	for (int i = max(position.y-a, 0.f); i < min(float(image.getSize().y), position.y + a); i++)
+	for (int i = max(position.y - a, 0.f); i < min(float(image.getSize().y), position.y + a); i++)
 	{
-		for (int j = max(position.x - a, 0.f); j < min(float(image.getSize().x), position.x+a); j++)
+		for (int j = max(position.x - a, 0.f); j < min(float(image.getSize().x), position.x + a); j++)
 		{
 			if (Distance(focus1, Vector2f(j, i)) + Distance(focus2, Vector2f(j, i)) < size.x * 2)
 			{

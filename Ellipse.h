@@ -19,7 +19,6 @@ public:
 
 	Color color;
 
-
 private:
 	Vector2f position;
 	Vector2f size;
@@ -29,7 +28,5 @@ private:
 	Vector2f shift;
 	Vector2f focus1;
 	Vector2f focus2;
-
-
 
 };

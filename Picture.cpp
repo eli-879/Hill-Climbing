@@ -53,6 +53,7 @@ void Picture::mutate()
 	
 	ellipse_current = ellipse_array[i];
 
+	//randomising
 	ellipse_array[i].move(randVector2f(-10, 10));
 	ellipse_array[i].scale(randSize(randVector2f(-10, 10)));
 	ellipse_array[i].rotate(randAngle(-10, 10));
@@ -114,7 +115,6 @@ void Picture::mutate()
 		ellipse_num += 1;
 	}
 
-	
 }
 
 void Picture::draw()

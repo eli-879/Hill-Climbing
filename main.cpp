@@ -3,6 +3,7 @@
 #include <SFML/System.hpp>
 #include "Picture.h"
 #include "iostream"
+#include <direct.h>
 
 using namespace std;
 using namespace sf;
@@ -10,20 +11,23 @@ using namespace sf;
 int getIndex(string word, char c);
 
 int main() {
-	string path = "aruler.jpeg";
-
-	int index = getIndex(path, '.');
-	
-	string substring = path.substr(0, index);
-
-	cout << substring << endl;
-
+	string path;
+	int check;
 	string filename;
-	string jpg = ".jpg";
-	string jpeg = ".jpeg";
-	string png = ".png";
 
-	int increment = 25;
+	check = _mkdir("Incremental Pictures");
+
+	cout << "Pleae enter filename of picture (e.g. cat.jpg): ";
+	cin >> path;
+
+	//string path = "aruler.jpeg";
+
+	// splicing filename into name and extension part
+	int index = getIndex(path, '.');
+	string substring = path.substr(0, index);
+	string filetype = path.substr(index + 1);
+
+	int increment = 50;
 
 	const int height = 800;
 	const int width = 800;
@@ -38,7 +42,7 @@ int main() {
 		int num = picture.ellipse_number();
 		if (num % increment == 0)
 		{
-			filename = "Incremental Pictures/a" + substring + std::to_string(num / increment) + jpeg;
+			filename = "Incremental Pictures/" + substring + std::to_string(num / increment) + "." + filetype;
 			cout << filename << endl;
 			picture.save_picture(filename);
 		}
