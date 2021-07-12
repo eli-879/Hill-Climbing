@@ -166,6 +166,9 @@
   <ItemGroup>
     <Image Include="5head.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="requirements.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
